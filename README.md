@@ -9,4 +9,10 @@ Use either the Gui buttons or the arrow keys left and right to change the select
 
 Use Numpad1-6 to send the message to the game. Works regardless of gui being shown or not.
 
+<<<<<<< HEAD
 If, for whatever reason you need to quickly terminate the script, press ctrl+f4.
+=======
+If, for whatever reason you need to quickly terminate the script, press ctrl+f4.
+
+I am not responsible for ban that might occur, but i have been using autohotkey together with league of legends on NA server for 4 seasons without issues.
+>>>>>>> parent of 303d0f7... Update README.md
