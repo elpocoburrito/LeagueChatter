@@ -27,6 +27,7 @@ IfNotExist, %settingsFile%
 	IniWrite, 110, %settingsFile%, Gui, windowHeight
 	IniWrite, 250, %settingsFile%, Gui, windowX
 	IniWrite, 0, %settingsFile%, Gui, windowY
+	IniWrite, true, %settingsFile%, Gui, RightAlign
 	
 }
 IfExist, %settingsFile%
@@ -36,6 +37,7 @@ IfExist, %settingsFile%
 	IniRead, windowHeight, %settingsFile%, Gui, windowHeight, 110
 	IniRead, windowX, %settingsFile%, Gui, windowX, 250
 	IniRead, windowY, %settingsFile%, Gui, windowY, 0
+	IniRead, RightAlign, %settingsFile%, Gui, RightAlign, true
 }
 
 global count = 1
@@ -54,11 +56,11 @@ Gui, Font, s9, Arial
 
 Gui, Add, Text, vText0 Center x%titleXPos% y5 w%messagesWidth% h%messagesHeight%, % SubStr(msgArray[count], 3) 	;title
 Gui, Add, Text, vText1 x5 y+5 w%messagesWidth% h%messagesHeight%, % "1. " . msgArray[count+1]					;text 1
-Gui, Add, Text, vText4 Right x+5  w%messagesWidth% h%messagesHeight%, % "4. " . msgArray[count+4]
+Gui, Add, Text, vText4 x+5  w%messagesWidth% h%messagesHeight%, % "4. " . msgArray[count+4]
 Gui, Add, Text, vText2 x5 y+5 w%messagesWidth% h%messagesHeight%, % "2. " . msgArray[count+2]					;text 2
-Gui, Add, Text, vText5 Right x+5 w%messagesWidth% h%messagesHeight%, % "5. " . msgArray[count+5]
+Gui, Add, Text, vText5 x+5 w%messagesWidth% h%messagesHeight%, % "5. " . msgArray[count+5]
 Gui, Add, Text, vText3 x5 y+5 w%messagesWidth% h%messagesHeight%, % "3. " . msgArray[count+3]					;text 3
-Gui, Add, Text, vText6 Right x+5 w%messagesWidth% h%messagesHeight%, % "6. " . msgArray[count+6]
+Gui, Add, Text, vText6 x+5 w%messagesWidth% h%messagesHeight%, % "6. " . msgArray[count+6]
 if (btnsEnabled == "true") {
 	Gui, Add, Button, vBtnPrev gPrev c808080 x0 y%btnYPos% w%buttonWidth% h%buttonHeight% , Previous
 	Gui, Add, Button, vBtnNext gNext c808080 x+%btnNextXPos% y%btnYPos% w%buttonWidth% h%buttonHeight% , Next
@@ -66,6 +68,11 @@ if (btnsEnabled == "true") {
 else if (btnsEnabled == "false") {
 	GuiControlGet, t6, Pos, Text6
 	windowHeight := t6H+t6Y+5
+}
+if (RightAlign == "true"){
+	GuiControl, +Right, Text4
+	GuiControl, +Right, Text5
+	GuiControl, +Right, Text6
 }
 Gui, Font, s10 Bold, Arial
 GuiControl, Font, Text0
