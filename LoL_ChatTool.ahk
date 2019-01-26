@@ -27,7 +27,7 @@ IfNotExist, %settingsFile%
 	IniWrite, 110, %settingsFile%, Gui, windowHeight
 	IniWrite, 250, %settingsFile%, Gui, windowX
 	IniWrite, 0, %settingsFile%, Gui, windowY
-	IniWrite, true, %settingsFile%, Gui, RightAlign
+	IniWrite, true, %settingsFile%, Gui, rightAlign
 	
 }
 IfExist, %settingsFile%
@@ -37,7 +37,7 @@ IfExist, %settingsFile%
 	IniRead, windowHeight, %settingsFile%, Gui, windowHeight, 110
 	IniRead, windowX, %settingsFile%, Gui, windowX, 250
 	IniRead, windowY, %settingsFile%, Gui, windowY, 0
-	IniRead, RightAlign, %settingsFile%, Gui, RightAlign, true
+	IniRead, rightAlign, %settingsFile%, Gui, rightAlign, true
 }
 
 global count = 1
@@ -69,7 +69,7 @@ else if (btnsEnabled == "false") {
 	GuiControlGet, t6, Pos, Text6
 	windowHeight := t6H+t6Y+5
 }
-if (RightAlign == "true"){
+if (rightAlign == "true"){
 	GuiControl, +Right, Text4
 	GuiControl, +Right, Text5
 	GuiControl, +Right, Text6
@@ -123,7 +123,7 @@ return
 $Left::
 Prev:
 	if (count <= 1) 
-		count := msgArray.MaxIndex()-2
+		count := (msgArray.MaxIndex()-mod(20, 7))+1
 	else if (count > 7)
 		count := count - 7
 	i = 0
