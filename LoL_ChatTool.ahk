@@ -4,7 +4,7 @@
 #SingleInstance, Force
 #NoEnv
 SendMode, Event
-SetKeyDelay, 17, 17
+SetKeyDelay, 15, 15
 
 messagesFile := "Messages.dat"
 settingsFile := "ChatTool.conf.ini"
@@ -28,6 +28,7 @@ IfNotExist, %settingsFile%
 	IniWrite, 250, %settingsFile%, Gui, windowX
 	IniWrite, 0, %settingsFile%, Gui, windowY
 	IniWrite, true, %settingsFile%, Gui, rightAlign
+	IniWrite, true, %settingsFile%, Gui, guiTransparent
 	
 }
 IfExist, %settingsFile%
@@ -38,6 +39,7 @@ IfExist, %settingsFile%
 	IniRead, windowX, %settingsFile%, Gui, windowX, 250
 	IniRead, windowY, %settingsFile%, Gui, windowY, 0
 	IniRead, rightAlign, %settingsFile%, Gui, rightAlign, true
+	IniRead, guiTransparent, %settingsFile%, Gui, guiTransparent, true
 }
 
 global count = 1
@@ -54,6 +56,7 @@ Gui, +LastFound +AlwaysOnTop +ToolWindow -Caption +Border +E0x08000000
 Gui1 := WinExist()
 Gui, Font, s9, Arial
 
+
 Gui, Add, Text, vText0 Center x%titleXPos% y5 w%messagesWidth% h%messagesHeight%, % SubStr(msgArray[count], 3) 	;title
 Gui, Add, Text, vText1 x5 y+5 w%messagesWidth% h%messagesHeight%, % "1. " . msgArray[count+1]					;text 1
 Gui, Add, Text, vText4 x+5  w%messagesWidth% h%messagesHeight%, % "4. " . msgArray[count+4]
@@ -61,11 +64,11 @@ Gui, Add, Text, vText2 x5 y+5 w%messagesWidth% h%messagesHeight%, % "2. " . msgA
 Gui, Add, Text, vText5 x+5 w%messagesWidth% h%messagesHeight%, % "5. " . msgArray[count+5]
 Gui, Add, Text, vText3 x5 y+5 w%messagesWidth% h%messagesHeight%, % "3. " . msgArray[count+3]					;text 3
 Gui, Add, Text, vText6 x+5 w%messagesWidth% h%messagesHeight%, % "6. " . msgArray[count+6]
-if (btnsEnabled == "true") {
+if (btnsEnabled == "true" && guiTransparent != "true") {
 	Gui, Add, Button, vBtnPrev gPrev c808080 x0 y%btnYPos% w%buttonWidth% h%buttonHeight% , Previous
 	Gui, Add, Button, vBtnNext gNext c808080 x+%btnNextXPos% y%btnYPos% w%buttonWidth% h%buttonHeight% , Next
 }
-else if (btnsEnabled == "false") {
+else if (btnsEnabled == "false" || guiTransparent == "true") {
 	GuiControlGet, t6, Pos, Text6
 	windowHeight := t6H+t6Y+5
 }
@@ -76,6 +79,17 @@ if (rightAlign == "true"){
 }
 Gui, Font, s10 Bold, Arial
 GuiControl, Font, Text0
+if (guiTransparent == "true") {
+	Gui, Color, 000000
+	WinSet, TransColor, 000000
+	GuiControl, +cWhite, Text0
+	GuiControl, +cWhite, Text1
+	GuiControl, +cWhite, Text2
+	GuiControl, +cWhite, Text3
+	GuiControl, +cWhite, Text4
+	GuiControl, +cWhite, Text5
+	GuiControl, +cWhite, Text6
+}
 return
 
 ^f4::ExitApp
@@ -123,7 +137,7 @@ return
 $Left::
 Prev:
 	if (count <= 1) 
-		count := (msgArray.MaxIndex()-mod(20, 7))+1
+		count := (msgArray.MaxIndex()-mod(msgArray.MaxIndex(), 7))+1
 	else if (count > 7)
 		count := count - 7
 	i = 0
